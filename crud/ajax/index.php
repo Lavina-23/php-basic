@@ -83,67 +83,57 @@ include 'auth.php';
         }
       });
       $('.data').load("data.php");
-    })
-    $("#simpan").click(function() {
-      var data = $('.form-data').serialize();
-      var nama = document.getElementById("nama").value;
-      var jenkel1 = document.getElementById("jenkel1").value;
-      var jenkel2 = document.getElementById("jenkel2").value;
-      var alamat = document.getElementById("alamat").value;
-      var no_telp = document.getElementById("no_telp").value;
+      $("#simpan").click(function() {
+        var data = $('.form-data').serialize();
+        var nama = document.getElementById("nama").value;
+        var jenkel1 = document.getElementById("jenkel1").checked;
+        var jenkel2 = document.getElementById("jenkel2").checked;
+        var alamat = document.getElementById("alamat").value;
+        var no_telp = document.getElementById("no_telp").value;
 
-      console.log(jenkel1);
+        console.log(jenkel1);
 
-      if (nama == "") {
-        document.getElementById("err_nama").innerHTML = "Name is required !";
-      } else {
-        document.getElementById("err_nama").innerHTML = "";
-      }
-
-      if (alamat == "") {
-        document.getElementById("err_alamat").innerHTML = "Address is required !";
-      } else {
-        document.getElementById("err_alamat").innerHTML = "";
-      }
-
-      document.getElementById("jenkel1").addEventListener("change", function() {
-        if (this.checked) {
-          document.getElementById("err_jenis_kelamin").innerHTML = "";
+        if (nama == "") {
+          document.getElementById("err_nama").innerHTML = "Name is required !";
         } else {
-          document.getElementById("err_jenis_kelamin").innerHTML = "Gender is must be selected";
+          document.getElementById("err_nama").innerHTML = "";
         }
-      });
 
-      document.getElementById("jenkel2").addEventListener("change", function() {
-        if (this.checked) {
-          document.getElementById("err_jenis_kelamin").innerHTML = "";
+        if (alamat == "") {
+          document.getElementById("err_alamat").innerHTML = "Address is required !";
         } else {
-          document.getElementById("err_jenis_kelamin").innerHTML = "Gender is must be selected";
+          document.getElementById("err_alamat").innerHTML = "";
         }
-      });
 
-      if (no_telp == "") {
-        document.getElementById("err_no_telp").innerHTML = "Phone number is required !";
-      } else {
-        document.getElementById("err_no_telp").innerHTML = "";
-      }
+        if (!jenkel1 && !jenkel2) {
+          document.getElementById("err_jenis_kelamin").innerHTML = "Gender must be selected";
+        } else {
+          document.getElementById("err_jenis_kelamin").innerHTML = "";
+        }
 
-      if (nama != "" && (jenkel1 == 'L' || jenkel2 == 'P') && alamat != "" && no_telp != "") {
-        $.ajax({
-          type: 'POST',
-          url: "form_action.php",
-          data: data,
-          success: function() {
-            $('.data').load("data.php");
-            document.getElementById("id").value = "";
-            document.getElementById("form-data").reset();
-          },
-          error: function(response) {
-            console.log(response.responseText);
-          }
-        })
-      }
+        if (no_telp == "") {
+          document.getElementById("err_no_telp").innerHTML = "Phone number is required !";
+        } else {
+          document.getElementById("err_no_telp").innerHTML = "";
+        }
 
+        if (nama != "" && (jenkel1 || jenkel2) && alamat != "" && no_telp != "") {
+          $.ajax({
+            type: 'POST',
+            url: "form_action.php",
+            data: data,
+            success: function() {
+              $('.data').load("data.php");
+              document.getElementById("id").value = "";
+              document.getElementById("form-data").reset();
+            },
+            error: function(response) {
+              console.log(response.responseText);
+            }
+          })
+        }
+
+      })
     })
   </script>
 </body>
